@@ -1,0 +1,3 @@
+rootProject.name = 'cristalix-npcs'
+
+include 'npcs-data', 'npcs-bukkit-api', 'npcs-client-mod'
