@@ -16,6 +16,7 @@ import dev.xdark.clientapi.util.EnumHand;
 import dev.xdark.clientapi.world.World;
 import dev.xdark.clientapi.world.chunk.Chunk;
 import dev.xdark.feder.NetUtil;
+import io.netty.buffer.Unpooled;
 import lombok.val;
 import ru.cristalix.npcs.data.NpcBehaviour;
 import ru.cristalix.npcs.data.NpcData;
@@ -89,13 +90,14 @@ public class NpcsMod implements ModMain {
 			@Override
 			public void accept(GameLoop gameLoop) {
 
+				int tick = ticks[0]++ % 600;
+
 				for (Npc npc : npcs) {
 
 					if (npc.getData().getBehaviour() == NpcBehaviour.NONE) continue;
 					val lookAround = npc.getData().getBehaviour() == NpcBehaviour.STARE_AND_LOOK_AROUND;
 
-					EntityLiving entity = npc.getEntity();
-					int tick = ticks[0]++ % 600;
+					EntityLivingBase entity = npc.getEntity();
 
 					if (lookAround && (tick == 500 || tick == 510)) entity.swingArm(EnumHand.MAIN_HAND);
 					float dyaw = 0;
@@ -127,13 +129,23 @@ public class NpcsMod implements ModMain {
 			}
 		}, 1);
 
+		clientApi.clientConnection().sendPayload("npcs:loaded", Unpooled.EMPTY_BUFFER);
+
 //		npc.setCustomNameTag(npc.getEntityId() + "");
 	}
 
 	private Npc createNpc(NpcData npcData) {
 
-		EntityLiving npc = (EntityLiving) clientApi.entityProvider().newEntity(npcData.getId(), clientApi.minecraft().getWorld());
-		UUID id = UUID.randomUUID();
+		Entity npc1 = clientApi.entityProvider().newEntity(npcData.getType(), clientApi.minecraft().getWorld());
+		EntityLivingBase npc = (EntityLivingBase) npc1;
+		int skinType = npcData.isSlimArms() ? 1 : 0;
+		UUID id;
+		do {
+			id = UUID.randomUUID();
+		} while (id.hashCode() % 2 != skinType);
+
+		System.out.println(npcData.getId() + " " + npcData.isSlimArms() + " " + id + " " + npc1);
+
 		npc.setUniqueId(id);
 
 		if (npcData.getId() == EntityProvider.PLAYER) {
@@ -154,6 +166,9 @@ public class NpcsMod implements ModMain {
 			player.setWearing(PlayerModelPart.LEFT_SLEEVE);
 			player.setWearing(PlayerModelPart.RIGHT_PANTS_LEG);
 			player.setWearing(PlayerModelPart.RIGHT_SLEEVE);
+
+			if (npcData.isSlimArms()) info.setSkinType("SLIM");
+			else info.setSkinType("DEFAULT");
 
 			clientApi.clientConnection().addPlayerInfo(info);
 

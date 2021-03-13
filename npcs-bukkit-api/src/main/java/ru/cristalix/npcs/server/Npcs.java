@@ -39,7 +39,7 @@ public class Npcs implements Listener {
 		Npcs.plugin = plugin;
 		Bukkit.getPluginManager().registerEvents(new Npcs(), plugin);
 
-		Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "boards:loaded", (channel, player, data) -> {
+		Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "npcs:loaded", (channel, player, data) -> {
 			active.add(player);
 
 			for (Npc npcs : globalNpcs) {

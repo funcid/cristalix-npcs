@@ -16,6 +16,7 @@ public class NpcData {
 	private final float yaw;
 	private final String skinUrl;
 	private final String skinDigest;
+	private final boolean slimArms;
 
 
 }

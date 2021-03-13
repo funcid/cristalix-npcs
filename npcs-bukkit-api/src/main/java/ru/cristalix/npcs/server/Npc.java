@@ -31,11 +31,12 @@ public class Npc {
 
 	private String skinUrl;
 	private String skinDigest;
+	private boolean slimArms;
 	private Consumer<Player> onClick;
 	private ByteBuf internalCachedData;
 
 	public NpcData getData() {
-		return new NpcData(id, type.typeId, name, location.x, location.y, location.z, location.pitch, location.yaw, skinUrl, skinDigest);
+		return new NpcData(id, type == EntityType.PLAYER ? 1000 : type.typeId, name, location.x, location.y, location.z, location.pitch, location.yaw, skinUrl, skinDigest, slimArms);
 	}
 
 }
