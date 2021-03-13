@@ -22,3 +22,5 @@ dependencies {
 Npcs.init(plugin); // В onEnable
 Npcs.spawn(Npc.builder()...build()); // Чтобы заспавнить
 ```
+
+Используйте Behaviour.STARE_AND_LOOK_AROUND, пока остальные опции нормально не заработают
