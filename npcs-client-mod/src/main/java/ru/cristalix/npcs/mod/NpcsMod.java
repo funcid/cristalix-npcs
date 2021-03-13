@@ -49,7 +49,6 @@ public class NpcsMod implements ModMain {
 		clientApi.messageBus().register(clientApi.messageBus().createListener(), PluginMessage.class, new Consumer<PluginMessage>() {
 			@Override
 			public void accept(PluginMessage pluginMessage) {
-				System.out.println(pluginMessage.getChannel());
 				if (pluginMessage.getChannel().equals("npcs")) {
 					String json = NetUtil.readUtf8(pluginMessage.getData());
 					NpcData npcData = gson.fromJson(json, NpcData.class);
@@ -59,7 +58,7 @@ public class NpcsMod implements ModMain {
 					int chunkZ = ((int) npcData.getZ()) >> 4;
 					World world = clientApi.minecraft().getWorld();
 					Chunk chunk = world.getChunkProvider().getLoadedChunk(chunkX, chunkZ);
-					if (chunk != null && chunk.isEmpty()) {
+					if (chunk != null) {
 						world.spawnEntity(npc.getEntity());
 					}
 				}
