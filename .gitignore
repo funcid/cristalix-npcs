@@ -1,9 +1,4 @@
-# Project exclude paths
-/.gradle/
-/build/
-/npcs-bukkit-api/build/
-/npcs-bukkit-api/build/classes/java/main/
-/npcs-client-mod/build/
-/npcs-client-mod/build/classes/java/main/
-/npcs-data/build/
-/npcs-data/build/classes/java/main/
+.idea
+.gradle
+build
+npcs-bukkit-api/upload.gradle

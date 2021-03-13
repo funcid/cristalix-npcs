@@ -3,7 +3,12 @@ dependencies {
 //    compileOnly 'ru.cristalix:client-api-full:1.0.2'
     compileOnly 'com.mojang:authlib:1.5.25'
     compileOnly 'dev.xdark:clientapi:1.0.5'
+    implementation project(':npcs-data')
 
+}
+
+jar {
+    from configurations.runtimeClasspath.collect { it.directory ? it : zipTree(it) }
 }
 
 sourceCompatibility = '1.6'

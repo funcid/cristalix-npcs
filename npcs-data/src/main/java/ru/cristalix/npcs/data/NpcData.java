@@ -14,6 +14,8 @@ public class NpcData {
 	private final double z;
 	private final float pitch;
 	private final float yaw;
+	private final String skinUrl;
+	private final String skinDigest;
 
 
 }

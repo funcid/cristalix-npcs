@@ -19,15 +19,23 @@ import java.util.function.Consumer;
 public class Npc {
 
 	private final int id = Entity.entityCount++;
-	private final EntityType type;
+
+	@Builder.Default
+	private final EntityType type = EntityType.PLAYER;
+
 	private String name;
 	private Location location;
-	private NpcBehaviour behaviour;
+
+	@Builder.Default
+	private NpcBehaviour behaviour = NpcBehaviour.NONE;
+
+	private String skinUrl;
+	private String skinDigest;
 	private Consumer<Player> onClick;
 	private ByteBuf internalCachedData;
 
 	public NpcData getData() {
-		return new NpcData(id, type.typeId, name, location.x, location.y, location.z, location.pitch, location.yaw);
+		return new NpcData(id, type.typeId, name, location.x, location.y, location.z, location.pitch, location.yaw, skinUrl, skinDigest);
 	}
 
 }

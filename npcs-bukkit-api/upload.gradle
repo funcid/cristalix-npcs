@@ -1,0 +1,23 @@
+
+
+apply plugin: 'org.hidetake.ssh'
+
+remotes {
+    webServer {
+        host = 'mokou.dedi.c7x.dev'
+        user = 'lakaithree'
+        identity = file('/Users/delfikpro/.ssh/id_rsa')
+    }
+}
+
+task upload() {
+    dependsOn tasks.jar
+    doLast {
+        ssh.run {
+            session(remotes.webServer) {
+                put from: jar.getArchiveFile().get().getAsFile(), into: "/home/lakaithree/forest/realms/TEST-1/plugins"
+                execute 'netstat -tulpn | grep :6036 | grep --perl-regexp -o \"\\d+(?=/java)\" | xargs kill -TERM'
+            }
+        }
+    }
+}
