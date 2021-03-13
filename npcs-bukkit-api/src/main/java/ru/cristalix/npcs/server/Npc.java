@@ -36,7 +36,7 @@ public class Npc {
 	private ByteBuf internalCachedData;
 
 	public NpcData getData() {
-		return new NpcData(id, type == EntityType.PLAYER ? 1000 : type.typeId, name, location.x, location.y, location.z, location.pitch, location.yaw, skinUrl, skinDigest, slimArms);
+		return new NpcData(id, type == EntityType.PLAYER ? 1000 : type.typeId, name, behaviour, location.x, location.y, location.z, location.pitch, location.yaw, skinUrl, skinDigest, slimArms);
 	}
 
 }

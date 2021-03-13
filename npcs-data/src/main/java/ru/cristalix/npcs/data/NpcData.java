@@ -8,7 +8,7 @@ public class NpcData {
 	private final int id;
 	private final int type;
 	private final String name;
-	private NpcBehaviour behaviour;
+	private final NpcBehaviour behaviour;
 	private final double x;
 	private final double y;
 	private final double z;

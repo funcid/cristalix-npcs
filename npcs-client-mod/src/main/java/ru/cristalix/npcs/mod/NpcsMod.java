@@ -16,12 +16,19 @@ import dev.xdark.clientapi.util.EnumHand;
 import dev.xdark.clientapi.world.World;
 import dev.xdark.clientapi.world.chunk.Chunk;
 import dev.xdark.feder.NetUtil;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.val;
 import ru.cristalix.npcs.data.NpcBehaviour;
 import ru.cristalix.npcs.data.NpcData;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -42,6 +49,7 @@ public class NpcsMod implements ModMain {
 		clientApi.messageBus().register(clientApi.messageBus().createListener(), PluginMessage.class, new Consumer<PluginMessage>() {
 			@Override
 			public void accept(PluginMessage pluginMessage) {
+				System.out.println(pluginMessage.getChannel());
 				if (pluginMessage.getChannel().equals("npcs")) {
 					String json = NetUtil.readUtf8(pluginMessage.getData());
 					NpcData npcData = gson.fromJson(json, NpcData.class);
@@ -50,12 +58,14 @@ public class NpcsMod implements ModMain {
 					int chunkX = ((int) npcData.getX()) >> 4;
 					int chunkZ = ((int) npcData.getZ()) >> 4;
 					World world = clientApi.minecraft().getWorld();
-					if (world.getChunkProvider().getLoadedChunk(chunkX, chunkZ) != null) {
+					Chunk chunk = world.getChunkProvider().getLoadedChunk(chunkX, chunkZ);
+					if (chunk != null && chunk.isEmpty()) {
 						world.spawnEntity(npc.getEntity());
 					}
 				}
 			}
 		}, 1);
+
 
 		EntityPlayerSP player = this.clientApi.minecraft().getPlayer();
 

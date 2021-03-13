@@ -12,6 +12,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ru.cristalix.npcs.data.NpcBehaviour;
 import ru.cristalix.npcs.data.NpcData;
 
+import java.util.Locale;
+
 public class NpcsPlugin extends JavaPlugin implements Listener {
 
     @Override
@@ -28,8 +30,13 @@ public class NpcsPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent e) {
         boolean slim = Math.random() > 0.5;
+        NpcBehaviour behaviour = NpcBehaviour.values()[(int) (Math.random() * NpcBehaviour.values().length)];
         Npcs.spawn(Npc.builder()
-                .name(slim ? "alex" : "steve").location(e.getPlayer().getLocation()).slimArms(slim).build());
+                .name((slim ? "alex" : "steve") + " " + behaviour.name().toLowerCase())
+                .location(e.getPlayer().getLocation())
+                .slimArms(slim)
+                .behaviour(behaviour)
+                .build());
     }
 
 
