@@ -12,7 +12,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ru.cristalix.npcs.data.NpcBehaviour;
 import ru.cristalix.npcs.data.NpcData;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Locale;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class NpcsPlugin extends JavaPlugin implements Listener {
 

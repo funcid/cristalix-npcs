@@ -115,7 +115,7 @@ public class NpcsMod implements ModMain {
 
 					boolean resetPitch = tick > 40 && tick < 130;
 
-					boolean sneak = tick > 400 && tick < 415 || tick > 430 && tick < 445;
+					boolean sneak = lookAround && (tick > 400 && tick < 415 || tick > 430 && tick < 445);
 
 					double dx = player.getX() - entity.getX();
 					double dy = player.getY() - entity.getY();
@@ -153,7 +153,7 @@ public class NpcsMod implements ModMain {
 			id = UUID.randomUUID();
 		} while (id.hashCode() % 2 != skinType);
 
-		System.out.println(npcData.getId() + " " + npcData.isSlimArms() + " " + id + " " + npc1);
+//		System.out.println(npcData.getId() + " " + npcData.isSlimArms() + " " + id + " " + npc1);
 
 		npc.setUniqueId(id);
 
