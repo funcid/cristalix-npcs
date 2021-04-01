@@ -88,7 +88,7 @@ public class NpcsMod implements ModMain {
 				for (Npc npc : npcs) {
 					int chunkX = ((int) npc.getEntity().getX()) >> 4;
 					int chunkZ = ((int) npc.getEntity().getZ()) >> 4;
-					if (chunkX == chunk.getX() && chunkZ == chunk.getZ()) event.getChunk().getWorld().spawnEntity(npc.getEntity());
+					if (chunkX == chunk.getX() && chunkZ == chunk.getZ()) event.getChunk().getWorld().removeEntity(npc.getEntity());
 				}
 			}
 		}, 1);
@@ -123,10 +123,10 @@ public class NpcsMod implements ModMain {
 
 					boolean active = dx*dx+dy*dy+dz*dz < 36;
 
-					entity.setSneaking(sneak || !active);
+//					entity.setSneaking(sneak || !active);
 
 					dy /= Math.sqrt(dx*dx+dz*dz);
-					float yaw = active ? (float) (Math.atan2(-dx, dz) / Math.PI * 180) : 30;
+					float yaw = active ? (float) (Math.atan2(-dx, dz) / Math.PI * 180) : npc.getData().getYaw();
 					if (lookAround) yaw += dyaw;
 					entity.setRotationYawHead(yaw);
 					entity.setYaw(yaw);
@@ -146,6 +146,7 @@ public class NpcsMod implements ModMain {
 	private Npc createNpc(NpcData npcData) {
 
 		Entity npc1 = clientApi.entityProvider().newEntity(npcData.getType(), clientApi.minecraft().getWorld());
+		npc1.setEntityId(npcData.getId());
 		EntityLivingBase npc = (EntityLivingBase) npc1;
 		int skinType = npcData.isSlimArms() ? 1 : 0;
 		UUID id;
@@ -157,7 +158,7 @@ public class NpcsMod implements ModMain {
 
 		npc.setUniqueId(id);
 
-		if (npcData.getId() == EntityProvider.PLAYER) {
+		if (npcData.getType() == EntityProvider.PLAYER) {
 			AbstractClientPlayer player = (AbstractClientPlayer) npc;
 			GameProfile profile = new GameProfile(id, npcData.getName());
 			profile.getProperties().put("skinURL", new Property("skinURL", npcData.getSkinUrl()));
@@ -187,8 +188,6 @@ public class NpcsMod implements ModMain {
 		npc.setAlwaysRenderNameTag(true);
 		npc.setCustomNameTag(npcData.getName());
 
-		EntityPlayerSP player = clientApi.minecraft().getPlayer();
-		npc.teleport(player.getX(), player.getY(), player.getZ());
 		npc.teleport(npcData.getX(), npcData.getY(), npcData.getZ());
 		npc.setYaw(npcData.getYaw());
 		npc.setPitch(npcData.getPitch());

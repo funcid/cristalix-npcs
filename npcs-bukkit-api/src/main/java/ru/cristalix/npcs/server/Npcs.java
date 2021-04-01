@@ -119,7 +119,11 @@ public class Npcs implements Listener {
 	@EventHandler
 	public void handle(PlayerUseUnknownEntityEvent e) {
 		if (e.getHand() == EquipmentSlot.OFF_HAND) return;
-		e.getPlayer().sendMessage("Interacted at " + e.getEntityId());
+		for (Npc npc : globalNpcs) {
+			if (npc.getId() == e.getEntityId()) {
+				npc.getOnClick().accept(e.player);
+			}
+		}
 	}
 
 }
