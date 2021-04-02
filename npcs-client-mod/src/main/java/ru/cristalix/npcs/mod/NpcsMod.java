@@ -16,19 +16,12 @@ import dev.xdark.clientapi.util.EnumHand;
 import dev.xdark.clientapi.world.World;
 import dev.xdark.clientapi.world.chunk.Chunk;
 import dev.xdark.feder.NetUtil;
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.val;
 import ru.cristalix.npcs.data.NpcBehaviour;
 import ru.cristalix.npcs.data.NpcData;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -77,7 +70,8 @@ public class NpcsMod implements ModMain {
 				for (Npc npc : npcs) {
 					int chunkX = ((int) npc.getEntity().getX()) >> 4;
 					int chunkZ = ((int) npc.getEntity().getZ()) >> 4;
-					if (chunkX == chunk.getX() && chunkZ == chunk.getZ()) event.getChunk().getWorld().spawnEntity(npc.getEntity());
+					if (chunkX == chunk.getX() && chunkZ == chunk.getZ())
+						event.getChunk().getWorld().spawnEntity(npc.getEntity());
 				}
 			}
 		}, 1);
@@ -86,9 +80,12 @@ public class NpcsMod implements ModMain {
 			public void accept(ChunkUnload event) {
 				Chunk chunk = event.getChunk();
 				for (Npc npc : npcs) {
+					if (!npc.getData().isUnload())
+						continue;
 					int chunkX = ((int) npc.getEntity().getX()) >> 4;
 					int chunkZ = ((int) npc.getEntity().getZ()) >> 4;
-					if (chunkX == chunk.getX() && chunkZ == chunk.getZ()) event.getChunk().getWorld().removeEntity(npc.getEntity());
+					if (chunkX == chunk.getX() && chunkZ == chunk.getZ())
+						event.getChunk().getWorld().removeEntity(npc.getEntity());
 				}
 			}
 		}, 1);
@@ -121,11 +118,11 @@ public class NpcsMod implements ModMain {
 					double dy = player.getY() - entity.getY();
 					double dz = player.getZ() - entity.getZ();
 
-					boolean active = dx*dx+dy*dy+dz*dz < 36;
+					boolean active = dx * dx + dy * dy + dz * dz < 36;
 
 //					entity.setSneaking(sneak || !active);
 
-					dy /= Math.sqrt(dx*dx+dz*dz);
+					dy /= Math.sqrt(dx * dx + dz * dz);
 					float yaw = active ? (float) (Math.atan2(-dx, dz) / Math.PI * 180) : npc.getData().getYaw();
 					if (lookAround) yaw += dyaw;
 					entity.setRotationYawHead(yaw);

@@ -34,9 +34,12 @@ public class Npc {
 	private boolean slimArms;
 	private Consumer<Player> onClick;
 	private ByteBuf internalCachedData;
+	
+	@Builder.Default
+	private boolean unload = true;
 
 	public NpcData getData() {
-		return new NpcData(id, type == EntityType.PLAYER ? 1000 : type.typeId, name, behaviour, location.x, location.y, location.z, location.pitch, location.yaw, skinUrl, skinDigest, slimArms);
+		return new NpcData(id, type == EntityType.PLAYER ? 1000 : type.typeId, name, behaviour, location.x, location.y, location.z, location.pitch, location.yaw, skinUrl, skinDigest, slimArms, unload);
 	}
 
 }

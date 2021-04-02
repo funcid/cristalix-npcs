@@ -17,6 +17,6 @@ public class NpcData {
 	private final String skinUrl;
 	private final String skinDigest;
 	private final boolean slimArms;
-
+	private final boolean unload;
 
 }
